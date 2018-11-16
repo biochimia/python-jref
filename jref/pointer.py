@@ -77,15 +77,6 @@ class Pointer(str):
 
     _See also_, JSON Pointer, RFC 6901, https://tools.ietf.org/html/rfc6901
     '''
-    class Value:
-        '''
-        Instances of Value will be replaced by their value property before
-        pointers are resolved in them.
-        '''
-        @property
-        def value(self):
-            raise NotImplementedError()
-
     def __new__(cls, *args, **kwargs):
         self = str.__new__(cls, *args, **kwargs)
         self.resolve_in = _inject_self(self, Pointer.resolve_in)

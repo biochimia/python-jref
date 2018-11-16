@@ -53,7 +53,7 @@ class MaximumRecursionDepth(ReferenceError):
         'up expansion of {1}.')
 
 
-class Reference(jref.util.EqualityComparableMixin, jref.pointer.Pointer.Value):
+class Reference(jref.util.EqualityComparableMixin):
     '''A reference identifies a specific portion of a document.'''
     def __init__(self, ctx, pointer):
         self.context = ctx
