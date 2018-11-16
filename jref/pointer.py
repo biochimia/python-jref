@@ -85,13 +85,21 @@ class Pointer(str):
         return self
 
     @staticmethod
+    def _eval_lazy_value(value):
+        try:
+            if not callable(value.__lazy_eval__):
+                return value
+        except AttributeError:
+            return value
+
+        return Pointer._eval_lazy_value(value.__lazy_eval__())
+
+    @staticmethod
     def resolve_in(self, document):
         value = document
 
         for token in Pointer.tokenize(self):
-            lazy_eval = getattr(value, '__lazy_eval__', None)
-            if callable(lazy_eval):
-                value = value.__lazy_eval__()
+            value = Pointer._eval_lazy_value(value)
 
             if isinstance(value, Mapping):
                 try:

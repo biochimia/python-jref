@@ -178,3 +178,17 @@ class TestPointer(unittest.TestCase):
         self.assertEqual(Pointer.resolve_in('/a', value), 1)
         self.assertEqual(Pointer.resolve_in('/b', value), 2)
         self.assertEqual(Pointer.resolve_in('/c', value), 3)
+
+    def test_it_offers_support_for_recursive_lazy_loaded_values(self):
+        class LazyValue:
+            def __lazy_eval__(self):
+                return {'a': 1, 'b': 2, 'c': 3}
+
+        class EvenLazierValue:
+            def __lazy_eval__(self):
+                return LazyValue()
+
+        value = EvenLazierValue()
+        self.assertEqual(Pointer.resolve_in('/a', value), 1)
+        self.assertEqual(Pointer.resolve_in('/b', value), 2)
+        self.assertEqual(Pointer.resolve_in('/c', value), 3)
