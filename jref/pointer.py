@@ -58,7 +58,7 @@ class UnreferenceableValue(PointerError):
 def _inject_self(self, f):
     '''
     A function decorator that injects the 'self' argument in calls.
-    
+
     The purpose of this decorator is to enable creation of class methods that
     can work seamlessly as static methods and instance methods. To that end,
     methods that are to be available as both static and instance methods should

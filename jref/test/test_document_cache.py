@@ -7,7 +7,7 @@ from jref.uri import LocalPath, RemoteURI
 __metaclass__ = type
 
 
-class TestBaseContext:
+class _TestBaseContext:
     def __init__(self, base_uri, doc):
         self.base_uri = base_uri
         self._test_document = doc
@@ -16,20 +16,20 @@ class TestBaseContext:
         return self._test_document
 
 
-class TestContext(DocumentCacheMixin, TestBaseContext):
+class _TestContext(DocumentCacheMixin, _TestBaseContext):
     pass
 
 
 class TestDocumentCacheMixin(unittest.TestCase):
     def test_it_calls_super_to_load_document(self):
         sentinel = object()
-        tc = TestContext(self.id(), sentinel)
+        tc = _TestContext(self.id(), sentinel)
 
         self.assertIs(tc.load_document(), sentinel)
 
     def test_it_caches_a_loaded_document(self):
         sentinel = object()
-        tc = TestContext(self.id(), sentinel)
+        tc = _TestContext(self.id(), sentinel)
 
         self.assertIs(tc.load_document(), sentinel)
 
@@ -40,8 +40,8 @@ class TestDocumentCacheMixin(unittest.TestCase):
         sentinel1 = object()
         sentinel2 = object()
 
-        tc1 = TestContext(self.id(), sentinel1)
-        tc2 = TestContext(self.id(), sentinel2)
+        tc1 = _TestContext(self.id(), sentinel1)
+        tc2 = _TestContext(self.id(), sentinel2)
 
         doc1 = tc1.load_document()
         doc2 = tc2.load_document()
@@ -54,7 +54,7 @@ class TestDocumentCacheMixin(unittest.TestCase):
 
     def test_document_cache_is_keyed_on_base_uri_of_context(self):
         sentinel = object()
-        tc = TestContext(self.id(), sentinel)
+        tc = _TestContext(self.id(), sentinel)
 
         doc1 = tc.load_document()
 
@@ -72,7 +72,7 @@ class TestDocumentCacheMixin(unittest.TestCase):
         test_attr = '_test_cache_attribute'
 
         sentinel = object()
-        tc = TestContext(self.id(), sentinel)
+        tc = _TestContext(self.id(), sentinel)
 
         tc.DOCUMENT_CACHE_ATTRIBUTE = test_attr
         setattr(tc, test_attr, 'before')
@@ -97,7 +97,7 @@ class TestDocumentCacheMixin(unittest.TestCase):
         self.assertNotEqual(type(local), type(remote))
 
         sentinel = object()
-        tc = TestContext(local, sentinel)
+        tc = _TestContext(local, sentinel)
 
         doc1 = tc.load_document()
 
