@@ -156,8 +156,8 @@ class TestData(unittest.TestCase):
             YAML_DOCUMENT['binary'],
             b'The quick brown fox jumps over the lazy dog')
         self.assertEqual(
-            YAML_DOCUMENT['timestamp'],
-            datetime.datetime(2018, 1, 1))
+            YAML_DOCUMENT['timestamp'].utctimetuple(),
+            datetime.datetime(2018, 1, 1).utctimetuple())
         self.assertEqual(
             YAML_DOCUMENT['omap'], [('a', 1), ('b', 2), ('c', 3)])
         self.assertEqual(
