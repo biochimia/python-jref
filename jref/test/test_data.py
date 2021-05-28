@@ -13,7 +13,7 @@ JSON_DATA = b'''{
     "longish-number": 10633823966279326983230456482242756608,
     "floating-point-number": 4.25,
     "string": "some string",
-    "unicode-string": "\u65e9\u6668",
+    "unicode-string": "\\u65e9\\u6668",
     "object": {},
     "array": []
 }'''
@@ -42,7 +42,7 @@ YAML_DATA = b'''
 : some string
 
 ? unicode-string
-: "\u65e9\u6668"
+: "\\u65e9\\u6668"
 
 ? object
 : {}

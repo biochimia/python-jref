@@ -7,13 +7,13 @@ from io import BytesIO
 
 from jref.yaml import Loader
 
-from . import test_data 
+from . import test_data
 
 
 __metaclass__ = type
 
 
-class TestContext:
+class _TestContext:
     def __init__(self, name):
         self.base_uri = 'data:' + name
         self.data = getattr(test_data, name)
@@ -22,37 +22,37 @@ class TestContext:
         return BytesIO(self.data)
 
     def parse_reference(self, ref):
-        return TestReference(ref)
+        return _TestReference(ref)
 
 
-class TestReference(str):
+class _TestReference(str):
     pass
 
 
 class TestYamlLoader(unittest.TestCase):
     def test_it_loads_json_documents_properly(self):
-        ctx = TestContext('JSON_DATA')
+        ctx = _TestContext('JSON_DATA')
         with Loader(ctx) as loader:
             self.assertEqual(
                 test_data.JSON_DOCUMENT,
                 loader.get_single_data())
 
     def test_it_loads_yaml_documents_properly(self):
-        ctx = TestContext('YAML_DATA')
+        ctx = _TestContext('YAML_DATA')
         with Loader(ctx) as loader:
             self.assertEqual(
                 test_data.YAML_DOCUMENT,
                 loader.get_single_data())
 
     def assertIsTestReference(self, value, reference):
-        self.assertIsInstance(value, TestReference)
+        self.assertIsInstance(value, _TestReference)
         self.assertEqual(value, reference)
 
     def test_it_processes_reference_objects_using_the_context(self):
         good_ref = '#/value'
         not_a_ref = 'Not a reference'
 
-        ctx = TestContext('REFERENCES_DATA')
+        ctx = _TestContext('REFERENCES_DATA')
         with Loader(ctx) as loader:
             doc = loader.get_single_data()
 
@@ -73,7 +73,7 @@ class TestYamlLoader(unittest.TestCase):
         good_ref = '#/value'
         not_a_ref = 'Not a reference'
 
-        ctx = TestContext('REFERENCE_IN_SET_DATA')
+        ctx = _TestContext('REFERENCE_IN_SET_DATA')
         with Loader(ctx) as loader:
             doc = loader.get_single_data()
 
@@ -82,7 +82,7 @@ class TestYamlLoader(unittest.TestCase):
 
         for v in doc:
             self.assertTrue(
-                isinstance(v, TestReference)
+                isinstance(v, _TestReference)
                 or v == not_a_ref)
 
 
